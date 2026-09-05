@@ -1,8 +1,21 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabase";
 export default function Home(){
   const [todo, setTodo] = useState("");
   const [todos, setTodos] = useState<string[]>([])
+  async function loadTodos() {
+    const { data, error }= await supabase 
+      .from("todos")
+      .select("*");
+
+    console.log(data);
+    console.log(error);
+  }
+  
+  useEffect(() => {
+    loadTodos();
+  })
   function addTodo() {
     setTodos([...todos, todo]);
     setTodo("")
